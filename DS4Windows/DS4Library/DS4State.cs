@@ -1,21 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Runtime.Serialization;
 
 namespace DS4Windows
 {
+    [DataContract]
     public class DS4State
     {
+        [DataMember]
         public DateTime ReportTimeStamp;
+        [DataMember]
         public bool Square, Triangle, Circle, Cross;
+        [DataMember]
         public bool DpadUp, DpadDown, DpadLeft, DpadRight;
+        [DataMember]
         public bool L1, L3, R1, R3;
+        [DataMember]
         public bool Share, Options, PS, Touch1, Touch2, TouchButton, TouchRight, TouchLeft;
+        [DataMember]
         public byte Touch1Identifier, Touch2Identifier;
+        [DataMember]
         public byte LX, RX, LY, RY, L2, R2;
+        [DataMember]
         public byte FrameCounter; // 0, 1, 2...62, 63, 0....
+        [DataMember]
         public byte TouchPacketCounter; // we break these out automatically
+        [DataMember]
         public byte Battery; // 0 for charging, 10/20/30/40/50/60/70/80/90/100 for percentage of full
 
         public DS4State()

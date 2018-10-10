@@ -8,6 +8,8 @@ using System.Reflection;
 using System.Media;
 using System.Threading.Tasks;
 using static DS4Windows.Global;
+using DS4Windows.DS4Control;
+
 namespace DS4Windows
 {
     public class ControlService
@@ -473,7 +475,6 @@ namespace DS4Windows
                 CheckForHotkeys(ind, cState, pState);
                 if (eastertime)
                     EasterTime(ind);
-                GetInputkeys(ind);
                 if (LSCurve[ind] != 0 || RSCurve[ind] != 0 || LSDeadzone[ind] != 0 || RSDeadzone[ind] != 0 ||
                     L2Deadzone[ind] != 0 || R2Deadzone[ind] != 0 || LSSens[ind] != 0 || RSSens[ind] != 0 ||
                     L2Sens[ind] != 0 || R2Sens[ind] != 0) //if a curve or deadzone is in place
@@ -489,6 +490,11 @@ namespace DS4Windows
 
                 // Update the GUI/whatever.
                 DS4LightBar.updateLightBar(device, ind, cState, ExposedState[ind], touchPad[ind]);
+
+                if(cState.FrameCounter % 15 == 0)
+                {
+                    ControlStateLogger.Log(cState);
+                }
 
                 x360Bus.Parse(cState, processingData[ind].Report, ind);
                 // We push the translated Xinput state, and simultaneously we
