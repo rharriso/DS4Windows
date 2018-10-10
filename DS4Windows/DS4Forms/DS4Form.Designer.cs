@@ -33,7 +33,6 @@ namespace DS4Windows
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DS4Form));
-            DS4Windows.Properties.Settings settings2 = new DS4Windows.Properties.Settings();
             this.lvDebug = new System.Windows.Forms.ListView();
             this.chTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -152,9 +151,12 @@ namespace DS4Windows
             this.lLBUpdate = new System.Windows.Forms.LinkLabel();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.recordOutputPane = new System.Windows.Forms.TabPage();
+            this.recordingLengthInput = new System.Windows.Forms.NumericUpDown();
+            this.toggleRecording = new System.Windows.Forms.Button();
             this.recordFreqLbl = new System.Windows.Forms.Label();
             this.recordFreqTrackBar = new System.Windows.Forms.TrackBar();
             this.outputDirLabel = new System.Windows.Forms.Label();
+            this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.recordOutputDirBtn = new System.Windows.Forms.Button();
@@ -190,6 +192,7 @@ namespace DS4Windows
             this.flowLayoutPanel1.SuspendLayout();
             this.tabLog.SuspendLayout();
             this.recordOutputPane.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recordingLengthInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordFreqTrackBar)).BeginInit();
             this.cMCustomLed.SuspendLayout();
             this.SuspendLayout();
@@ -1128,9 +1131,12 @@ namespace DS4Windows
             // 
             // recordOutputPane
             // 
+            this.recordOutputPane.Controls.Add(this.recordingLengthInput);
+            this.recordOutputPane.Controls.Add(this.toggleRecording);
             this.recordOutputPane.Controls.Add(this.recordFreqLbl);
             this.recordOutputPane.Controls.Add(this.recordFreqTrackBar);
             this.recordOutputPane.Controls.Add(this.outputDirLabel);
+            this.recordOutputPane.Controls.Add(this.label3);
             this.recordOutputPane.Controls.Add(this.label2);
             this.recordOutputPane.Controls.Add(this.label1);
             this.recordOutputPane.Controls.Add(this.recordOutputDirBtn);
@@ -1138,14 +1144,23 @@ namespace DS4Windows
             this.recordOutputPane.Name = "recordOutputPane";
             this.recordOutputPane.UseVisualStyleBackColor = true;
             // 
+            // recordingLengthInput
+            // 
+            resources.ApplyResources(this.recordingLengthInput, "recordingLengthInput");
+            this.recordingLengthInput.Name = "recordingLengthInput";
+            this.recordingLengthInput.ValueChanged += new System.EventHandler(this.recordingLengthInput_ValueChanged);
+            // 
+            // toggleRecording
+            // 
+            resources.ApplyResources(this.toggleRecording, "toggleRecording");
+            this.toggleRecording.Name = "toggleRecording";
+            this.toggleRecording.UseVisualStyleBackColor = true;
+            this.toggleRecording.Click += new System.EventHandler(this.toggleRecording_Click);
+            // 
             // recordFreqLbl
             // 
             resources.ApplyResources(this.recordFreqLbl, "recordFreqLbl");
             this.recordFreqLbl.Name = "recordFreqLbl";
-            // Make a new source.
-            var feqLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Frequency");
-            this.recordFreqLbl.DataBindings.Add(feqLabelBinding);
-       
             // 
             // recordFreqTrackBar
             // 
@@ -1155,25 +1170,18 @@ namespace DS4Windows
             this.recordFreqTrackBar.Minimum = 1;
             this.recordFreqTrackBar.Name = "recordFreqTrackBar";
             this.recordFreqTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.recordFreqTrackBar.Value = RecordOutputSettings.Instance.Frequency;
+            this.recordFreqTrackBar.Value = 15;
             this.recordFreqTrackBar.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
-            // Make a new source.
-            var freqTrackBinding = new Binding("Value", RecordOutputSettings.Instance, "Frequency");
-            this.recordFreqTrackBar.DataBindings.Add(freqTrackBinding);
-                 
             // 
             // outputDirLabel
             // 
             resources.ApplyResources(this.outputDirLabel, "outputDirLabel");
-            settings2.recordingFrequency = 15;
-            settings2.recordingOutputDirectory = "";
-            settings2.SettingsKey = "";
             this.outputDirLabel.Name = "outputDirLabel";
-            this.outputDirLabel.Text = settings2.recordingOutputDirectory;
-            // Make a new source.
-            var dirLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Directory");
-            this.outputDirLabel.DataBindings.Add(dirLabelBinding);
-
+            // 
+            // label3
+            // 
+            resources.ApplyResources(this.label3, "label3");
+            this.label3.Name = "label3";
             // 
             // label2
             // 
@@ -1276,6 +1284,7 @@ namespace DS4Windows
             this.tabLog.ResumeLayout(false);
             this.recordOutputPane.ResumeLayout(false);
             this.recordOutputPane.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recordingLengthInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordFreqTrackBar)).EndInit();
             this.cMCustomLed.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -1416,6 +1425,9 @@ namespace DS4Windows
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TrackBar recordFreqTrackBar;
         private System.Windows.Forms.Label recordFreqLbl;
+        private Button toggleRecording;
+        private NumericUpDown recordingLengthInput;
+        private Label label3;
         //private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }

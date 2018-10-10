@@ -4,16 +4,17 @@ namespace DS4Windows.DS4Control
 {
     class RecordOutputSettings : INotifyPropertyChanged
     {
-        string directory = Properties.Settings.Default.recordingOutputDirectory;
-        int frequency = Properties.Settings.Default.recordingFrequency;
+        private string _directory = Properties.Settings.Default.recordingOutputDirectory;
+        private int _frequency = Properties.Settings.Default.recordingFrequency;
+        private int _recordingLength = Properties.Settings.Default.recordingLength;
         private bool _isRecording;
 
         public string Directory
         {
-            get => directory;
+            get => _directory;
             set
             {
-                directory = value;
+                _directory = value;
                 Properties.Settings.Default.recordingOutputDirectory = value;
                 Properties.Settings.Default.Save();
                 RaiseNotifyPropertyChanged("Directory");
@@ -22,16 +23,28 @@ namespace DS4Windows.DS4Control
 
         public int Frequency
         {
-            get => frequency;
+            get => _frequency;
             set
             {
-                frequency = value;
+                _frequency = value;
                 Properties.Settings.Default.recordingFrequency = value;
                 Properties.Settings.Default.Save();
                 RaiseNotifyPropertyChanged("Frequency");
             }
         }
 
+        
+        public int RecordingLength
+        {
+            get => _recordingLength;
+            set
+            {
+                _recordingLength= value;
+                Properties.Settings.Default.recordingLength = value;
+                Properties.Settings.Default.Save();
+                RaiseNotifyPropertyChanged("RecordingLength");
+            }
+        }
         public bool IsRecording
         {
             get => _isRecording;

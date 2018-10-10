@@ -1780,6 +1780,17 @@ namespace DS4Windows
             RecordOutputSettings.Instance.Frequency = recordFreqTrackBar.Value;
         }
 
+        private void toggleRecording_Click(object sender, EventArgs e)
+        {
+            RecordOutputSettings.Instance.IsRecording = !RecordOutputSettings.Instance.IsRecording;
+            toggleRecording.Text = RecordOutputSettings.Instance.IsRecording ? "Stop Recording" : "Start Recording";
+        }
+
+        private void recordingLengthInput_ValueChanged(object sender, EventArgs e)
+        {
+            RecordOutputSettings.Instance.RecordingLength = (int) recordingLengthInput.Value;
+        }
+
         private void cBDownloadLangauge_CheckedChanged(object sender, EventArgs e)
         {
             DownloadLang = cBDownloadLangauge.Checked;
