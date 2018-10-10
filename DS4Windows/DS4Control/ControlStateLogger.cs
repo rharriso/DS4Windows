@@ -13,15 +13,14 @@ namespace DS4Windows.DS4Control
         public static void Log(DS4State s)
         {
             states.Add(new DS4State(s));
-            states.ForEach(state => Console.Write(s.LX + ", "));
 
-            if (10 < states.Count)
+            if (RecordOutputSettings.Instance.RecordingLength <= states.Count)
             {
                 // log
                 var time = states[0].ReportTimeStamp
                     .ToFileTimeUtc()
                     .ToString();
-                var path = @"C:\Users\rthar\OneDrive\Desktop\Controller-Output\" + time + ".json";
+                var path = RecordOutputSettings.Instance.Directory + '\\' + time + ".json";
                 var serializer = new DataContractJsonSerializer(typeof(List<DS4State>));
                 memStream.Position = 0;
 
@@ -29,7 +28,6 @@ namespace DS4Windows.DS4Control
                 {
                     serializer.WriteObject(file, states);
                 }
-
 
                 // empty the states list
                 states = new List<DS4State>();

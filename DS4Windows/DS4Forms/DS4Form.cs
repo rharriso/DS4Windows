@@ -345,7 +345,21 @@ namespace DS4Windows
                     appShortcutToStartup();
                 }
             }
+            InitializeRecordPanel();
             UpdateTheUpdater();
+        }
+
+        private void InitializeRecordPanel()
+        {
+            this.recordingLengthInput.Value = RecordOutputSettings.Instance.RecordingLength;
+
+            var feqLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Frequency");
+            this.recordFreqLbl.DataBindings.Add(feqLabelBinding);
+            var freqTrackBinding = new Binding("Value", RecordOutputSettings.Instance, "Frequency");
+            this.recordFreqTrackBar.DataBindings.Add(freqTrackBinding);
+
+            var dirLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Directory");
+            this.outputDirLabel.DataBindings.Add(dirLabelBinding);
         }
 
         private async void UpdateTheUpdater()

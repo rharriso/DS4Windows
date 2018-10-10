@@ -97,18 +97,18 @@ namespace DS4Windows
                 LogDebug(message, true);
                 Log.LogToTray(message, true);
             }
-        }        
+        }
         public bool Start(bool showlog = true)
         {
             if (x360Bus.Open() && x360Bus.Start())
             {
                 if (showlog)
-                LogDebug(Properties.Resources.Starting);
+                    LogDebug(Properties.Resources.Starting);
                 DS4Devices.isExclusiveMode = UseExclusiveMode;
                 if (showlog)
                 {
                     LogDebug(Properties.Resources.SearchingController);
-                    LogDebug(DS4Devices.isExclusiveMode ?  Properties.Resources.UsingExclusive: Properties.Resources.UsingShared);
+                    LogDebug(DS4Devices.isExclusiveMode ? Properties.Resources.UsingExclusive : Properties.Resources.UsingShared);
                 }
                 try
                 {
@@ -134,9 +134,9 @@ namespace DS4Windows
                         //string filename = ProfilePath[ind];
                         ind++;
                         if (showlog)
-                            if (System.IO.File.Exists(appdatapath + "\\Profiles\\" + ProfilePath[ind-1] + ".xml"))
+                            if (System.IO.File.Exists(appdatapath + "\\Profiles\\" + ProfilePath[ind - 1] + ".xml"))
                             {
-                                string prolog = Properties.Resources.UsingProfile.Replace("*number*", ind.ToString()).Replace("*Profile name*", ProfilePath[ind-1]);
+                                string prolog = Properties.Resources.UsingProfile.Replace("*number*", ind.ToString()).Replace("*Profile name*", ProfilePath[ind - 1]);
                                 LogDebug(prolog);
                                 Log.LogToTray(prolog);
                             }
@@ -168,7 +168,7 @@ namespace DS4Windows
                 running = false;
                 if (showlog)
                     LogDebug(Properties.Resources.StoppingX360);
-                bool anyUnplugged = false;                
+                bool anyUnplugged = false;
                 for (int i = 0; i < DS4Controllers.Length; i++)
                 {
                     if (DS4Controllers[i] != null)
@@ -199,7 +199,7 @@ namespace DS4Windows
                 DS4Devices.stopControllers();
                 if (showlog)
                     LogDebug(Properties.Resources.StoppedDS4Windows);
-                ControllerStatusChanged(this);                
+                ControllerStatusChanged(this);
             }
             return true;
         }
@@ -250,7 +250,7 @@ namespace DS4Windows
                                 LogDebug(prolog);
                                 Log.LogToTray(prolog);
                             }
-                        
+
                             break;
                         }
                 }
@@ -282,10 +282,10 @@ namespace DS4Windows
                 while (!d.IsAlive())
                 {
                     if (sw.ElapsedMilliseconds < 1000)
-                        System.Threading.Thread.SpinWait(500); 
-                        //If weve been waiting less than 1 second let the thread keep its processing chunk
+                        System.Threading.Thread.SpinWait(500);
+                    //If weve been waiting less than 1 second let the thread keep its processing chunk
                     else
-                        System.Threading.Thread.Sleep(500); 
+                        System.Threading.Thread.Sleep(500);
                     //If weve been waiting more than 1 second give up some resources
 
                     if (sw.ElapsedMilliseconds > 5000) throw new TimeoutException(); //Weve waited long enough
@@ -305,7 +305,7 @@ namespace DS4Windows
             {
                 DS4Device d = DS4Controllers[index];
                 if (!d.IsAlive())
-                    //return "Connecting..."; // awaiting the first battery charge indication
+                //return "Connecting..."; // awaiting the first battery charge indication
                 {
                     var TimeoutThread = new System.Threading.Thread(() => TimeoutConnection(d));
                     TimeoutThread.IsBackground = true;
@@ -407,7 +407,7 @@ namespace DS4Windows
             if (DS4Controllers[index] != null)
             {
                 DS4Device d = DS4Controllers[index];
-                return d.ConnectionType+"";
+                return d.ConnectionType + "";
             }
             else
                 return Properties.Resources.NoneText;
@@ -427,7 +427,7 @@ namespace DS4Windows
             {
                 CurrentState[ind].Battery = PreviousState[ind].Battery = 0; // Reset for the next connection's initial status change.
                 x360Bus.Unplug(ind);
-                string removed = Properties.Resources.ControllerWasRemoved.Replace("*Mac address*", (ind +1).ToString());
+                string removed = Properties.Resources.ControllerWasRemoved.Replace("*Mac address*", (ind + 1).ToString());
                 if (DS4Controllers[ind].Battery <= 20 &&
                     DS4Controllers[ind].ConnectionType == ConnectionType.BT && !DS4Controllers[ind].Charging)
                     removed += ". " + Properties.Resources.ChargeController;
@@ -486,12 +486,13 @@ namespace DS4Windows
                     cState = MappedState[ind];
                 }
                 //if (HasCustomExtras(ind))
-                  //  DoExtras(ind);
+                //  DoExtras(ind);
 
                 // Update the GUI/whatever.
                 DS4LightBar.updateLightBar(device, ind, cState, ExposedState[ind], touchPad[ind]);
 
-                if(cState.FrameCounter % 15 == 0)
+                if (RecordOutputSettings.Instance.IsRecording &&
+                    cState.FrameCounter % RecordOutputSettings.Instance.Frequency == 0)
                 {
                     ControlStateLogger.Log(cState);
                 }
@@ -539,64 +540,64 @@ namespace DS4Windows
                 DS4LightBar.forcedFlash[ind] = 0;
             }
         }
-        
-       /* private void DoExtras(int ind)
-        {
-            DS4State cState = CurrentState[ind];
-            DS4StateExposed eState = ExposedState[ind];
-            Mouse tp = touchPad[ind];
-            DS4Controls helddown = DS4Controls.None;
-            foreach (KeyValuePair<DS4Controls, string> p in getCustomExtras(ind))
-            {
-                if (Mapping.getBoolMapping(ind, p.Key, cState, eState, tp))
-                {
-                    helddown = p.Key;
-                    break;
-                }
-            }
-            if (helddown != DS4Controls.None)
-            {
-                string p = getCustomExtras(ind)[helddown];
-                string[] extraS = p.Split(',');
-                int[] extras = new int[extraS.Length];
-                for (int i = 0; i < extraS.Length; i++)
-                {
-                    int b;
-                    if (int.TryParse(extraS[i], out b))
-                        extras[i] = b;
-                }
-                held[ind] = true;
-                try
-                {
-                    if (!(extras[0] == extras[1] && extras[1] == 0))
-                        setRumble((byte)extras[0], (byte)extras[1], ind);
-                    if (extras[2] == 1)
-                    {
-                        DS4Color color = new DS4Color { red = (byte)extras[3], green = (byte)extras[4], blue = (byte)extras[5] };
-                        DS4LightBar.forcedColor[ind] = color;
-                        DS4LightBar.forcedFlash[ind] = (byte)extras[6];
-                        DS4LightBar.forcelight[ind] = true;
-                    }
-                    if (extras[7] == 1)
-                    {
-                        if (oldmouse[ind] == -1)
-                            oldmouse[ind] = ButtonMouseSensitivity[ind];
-                        ButtonMouseSensitivity[ind] = extras[8];
-                    }
-                }
-                catch { }
-            }
-            else if (held[ind])
-            {
-                DS4LightBar.forcelight[ind] = false;
-                DS4LightBar.forcedFlash[ind] = 0;                
-                ButtonMouseSensitivity[ind] = oldmouse[ind];
-                oldmouse[ind] = -1;
-                setRumble(0, 0, ind);
-                held[ind] = false;
-            }
-        }*/
-        
+
+        /* private void DoExtras(int ind)
+         {
+             DS4State cState = CurrentState[ind];
+             DS4StateExposed eState = ExposedState[ind];
+             Mouse tp = touchPad[ind];
+             DS4Controls helddown = DS4Controls.None;
+             foreach (KeyValuePair<DS4Controls, string> p in getCustomExtras(ind))
+             {
+                 if (Mapping.getBoolMapping(ind, p.Key, cState, eState, tp))
+                 {
+                     helddown = p.Key;
+                     break;
+                 }
+             }
+             if (helddown != DS4Controls.None)
+             {
+                 string p = getCustomExtras(ind)[helddown];
+                 string[] extraS = p.Split(',');
+                 int[] extras = new int[extraS.Length];
+                 for (int i = 0; i < extraS.Length; i++)
+                 {
+                     int b;
+                     if (int.TryParse(extraS[i], out b))
+                         extras[i] = b;
+                 }
+                 held[ind] = true;
+                 try
+                 {
+                     if (!(extras[0] == extras[1] && extras[1] == 0))
+                         setRumble((byte)extras[0], (byte)extras[1], ind);
+                     if (extras[2] == 1)
+                     {
+                         DS4Color color = new DS4Color { red = (byte)extras[3], green = (byte)extras[4], blue = (byte)extras[5] };
+                         DS4LightBar.forcedColor[ind] = color;
+                         DS4LightBar.forcedFlash[ind] = (byte)extras[6];
+                         DS4LightBar.forcelight[ind] = true;
+                     }
+                     if (extras[7] == 1)
+                     {
+                         if (oldmouse[ind] == -1)
+                             oldmouse[ind] = ButtonMouseSensitivity[ind];
+                         ButtonMouseSensitivity[ind] = extras[8];
+                     }
+                 }
+                 catch { }
+             }
+             else if (held[ind])
+             {
+                 DS4LightBar.forcelight[ind] = false;
+                 DS4LightBar.forcedFlash[ind] = 0;                
+                 ButtonMouseSensitivity[ind] = oldmouse[ind];
+                 oldmouse[ind] = -1;
+                 setRumble(0, 0, ind);
+                 held[ind] = false;
+             }
+         }*/
+
 
 
         public void EasterTime(int ind)
@@ -778,7 +779,7 @@ namespace DS4Windows
                 }
             }
             else
-                touchreleased[deviceID] = true;            
+                touchreleased[deviceID] = true;
         }
 
         public virtual void StartTPOff(int deviceID)
@@ -852,6 +853,6 @@ namespace DS4Windows
         public DS4State getDS4StateMapped(int ind)
         {
             return MappedState[ind];
-        }        
+        }
     }
 }
