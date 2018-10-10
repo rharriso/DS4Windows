@@ -1,4 +1,7 @@
-﻿namespace DS4Windows
+﻿using DS4Windows.DS4Control;
+using System.Windows.Forms;
+
+namespace DS4Windows
 {
     partial class DS4Form
     {
@@ -30,6 +33,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DS4Form));
+            DS4Windows.Properties.Settings settings2 = new DS4Windows.Properties.Settings();
             this.lvDebug = new System.Windows.Forms.ListView();
             this.chTime = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.chData = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -129,6 +133,7 @@
             this.cBFlashWhenLate = new System.Windows.Forms.CheckBox();
             this.cBCloseMini = new System.Windows.Forms.CheckBox();
             this.cBQuickCharge = new System.Windows.Forms.CheckBox();
+            this.cBUseWhiteIcon = new System.Windows.Forms.CheckBox();
             this.cBDownloadLangauge = new System.Windows.Forms.CheckBox();
             this.cBUpdate = new System.Windows.Forms.CheckBox();
             this.pNUpdate = new System.Windows.Forms.Panel();
@@ -139,7 +144,6 @@
             this.lbUseXIPorts = new System.Windows.Forms.Label();
             this.nUDXIPorts = new System.Windows.Forms.NumericUpDown();
             this.lbLastXIPort = new System.Windows.Forms.Label();
-            this.cBUseWhiteIcon = new System.Windows.Forms.CheckBox();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.linkProfiles = new System.Windows.Forms.LinkLabel();
             this.lnkControllers = new System.Windows.Forms.LinkLabel();
@@ -147,11 +151,19 @@
             this.linkSetup = new System.Windows.Forms.LinkLabel();
             this.lLBUpdate = new System.Windows.Forms.LinkLabel();
             this.tabLog = new System.Windows.Forms.TabPage();
+            this.recordOutputPane = new System.Windows.Forms.TabPage();
+            this.recordFreqLbl = new System.Windows.Forms.Label();
+            this.recordFreqTrackBar = new System.Windows.Forms.TrackBar();
+            this.outputDirLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.recordOutputDirBtn = new System.Windows.Forms.Button();
             this.saveProfiles = new System.Windows.Forms.SaveFileDialog();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
             this.cMCustomLed = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.useProfileColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useCustomColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
             this.advColorDialog = new DS4Windows.AdvancedColorDialog();
             this.pnlButton.SuspendLayout();
             this.cMTaskbar.SuspendLayout();
@@ -177,6 +189,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.nUDXIPorts)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.tabLog.SuspendLayout();
+            this.recordOutputPane.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recordFreqTrackBar)).BeginInit();
             this.cMCustomLed.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -342,6 +356,7 @@
             this.tabMain.Controls.Add(this.tabAutoProfiles);
             this.tabMain.Controls.Add(this.tabSettings);
             this.tabMain.Controls.Add(this.tabLog);
+            this.tabMain.Controls.Add(this.recordOutputPane);
             resources.ApplyResources(this.tabMain, "tabMain");
             this.tabMain.Name = "tabMain";
             this.tabMain.SelectedIndex = 0;
@@ -408,8 +423,6 @@
             // pBStatus1
             // 
             resources.ApplyResources(this.pBStatus1, "pBStatus1");
-            this.pBStatus1.Image = global::DS4Windows.Properties.Resources.none;
-            this.pBStatus1.InitialImage = global::DS4Windows.Properties.Resources.BT;
             this.pBStatus1.Name = "pBStatus1";
             this.pBStatus1.TabStop = false;
             this.pBStatus1.Tag = "0";
@@ -558,8 +571,6 @@
             // pBStatus2
             // 
             resources.ApplyResources(this.pBStatus2, "pBStatus2");
-            this.pBStatus2.Image = global::DS4Windows.Properties.Resources.none;
-            this.pBStatus2.InitialImage = global::DS4Windows.Properties.Resources.BT;
             this.pBStatus2.Name = "pBStatus2";
             this.pBStatus2.TabStop = false;
             this.pBStatus2.Tag = "1";
@@ -568,8 +579,6 @@
             // pBStatus3
             // 
             resources.ApplyResources(this.pBStatus3, "pBStatus3");
-            this.pBStatus3.Image = global::DS4Windows.Properties.Resources.none;
-            this.pBStatus3.InitialImage = global::DS4Windows.Properties.Resources.BT;
             this.pBStatus3.Name = "pBStatus3";
             this.pBStatus3.TabStop = false;
             this.pBStatus3.Tag = "2";
@@ -578,8 +587,6 @@
             // pBStatus4
             // 
             resources.ApplyResources(this.pBStatus4, "pBStatus4");
-            this.pBStatus4.Image = global::DS4Windows.Properties.Resources.none;
-            this.pBStatus4.InitialImage = global::DS4Windows.Properties.Resources.BT;
             this.pBStatus4.Name = "pBStatus4";
             this.pBStatus4.TabStop = false;
             this.pBStatus4.Tag = "3";
@@ -747,7 +754,6 @@
             // tSBSaveProfile
             // 
             this.tSBSaveProfile.AutoToolTip = false;
-            this.tSBSaveProfile.Image = global::DS4Windows.Properties.Resources.saveprofile;
             resources.ApplyResources(this.tSBSaveProfile, "tSBSaveProfile");
             this.tSBSaveProfile.Name = "tSBSaveProfile";
             this.tSBSaveProfile.Click += new System.EventHandler(this.tSBSaveProfile_Click);
@@ -755,7 +761,6 @@
             // tSBCancel
             // 
             this.tSBCancel.AutoToolTip = false;
-            this.tSBCancel.Image = global::DS4Windows.Properties.Resources.delete;
             resources.ApplyResources(this.tSBCancel, "tSBCancel");
             this.tSBCancel.Name = "tSBCancel";
             this.tSBCancel.Click += new System.EventHandler(this.tSBCancel_Click);
@@ -767,7 +772,6 @@
             // 
             // tSBKeepSize
             // 
-            this.tSBKeepSize.Image = global::DS4Windows.Properties.Resources.size;
             resources.ApplyResources(this.tSBKeepSize, "tSBKeepSize");
             this.tSBKeepSize.Name = "tSBKeepSize";
             this.tSBKeepSize.Click += new System.EventHandler(this.tSBKeepSize_Click);
@@ -788,42 +792,36 @@
             // 
             // tsBNewProfle
             // 
-            this.tsBNewProfle.Image = global::DS4Windows.Properties.Resources.newprofile;
             resources.ApplyResources(this.tsBNewProfle, "tsBNewProfle");
             this.tsBNewProfle.Name = "tsBNewProfle";
             this.tsBNewProfle.Click += new System.EventHandler(this.tsBNewProfile_Click);
             // 
             // tsBEditProfile
             // 
-            this.tsBEditProfile.Image = global::DS4Windows.Properties.Resources.edit;
             resources.ApplyResources(this.tsBEditProfile, "tsBEditProfile");
             this.tsBEditProfile.Name = "tsBEditProfile";
             this.tsBEditProfile.Click += new System.EventHandler(this.tsBNEditProfile_Click);
             // 
             // tsBDeleteProfile
             // 
-            this.tsBDeleteProfile.Image = global::DS4Windows.Properties.Resources.delete;
             resources.ApplyResources(this.tsBDeleteProfile, "tsBDeleteProfile");
             this.tsBDeleteProfile.Name = "tsBDeleteProfile";
             this.tsBDeleteProfile.Click += new System.EventHandler(this.tsBDeleteProfle_Click);
             // 
             // tSBDupProfile
             // 
-            this.tSBDupProfile.Image = global::DS4Windows.Properties.Resources.copy;
             resources.ApplyResources(this.tSBDupProfile, "tSBDupProfile");
             this.tSBDupProfile.Name = "tSBDupProfile";
             this.tSBDupProfile.Click += new System.EventHandler(this.tSBDupProfile_Click);
             // 
             // tSBImportProfile
             // 
-            this.tSBImportProfile.Image = global::DS4Windows.Properties.Resources.import;
             resources.ApplyResources(this.tSBImportProfile, "tSBImportProfile");
             this.tSBImportProfile.Name = "tSBImportProfile";
             this.tSBImportProfile.Click += new System.EventHandler(this.tSBImportProfile_Click);
             // 
             // tSBExportProfile
             // 
-            this.tSBExportProfile.Image = global::DS4Windows.Properties.Resources.export;
             resources.ApplyResources(this.tSBExportProfile, "tSBExportProfile");
             this.tSBExportProfile.Name = "tSBExportProfile";
             this.tSBExportProfile.Click += new System.EventHandler(this.tSBExportProfile_Click);
@@ -974,6 +972,13 @@
             this.cBQuickCharge.UseVisualStyleBackColor = true;
             this.cBQuickCharge.CheckedChanged += new System.EventHandler(this.cBQuickCharge_CheckedChanged);
             // 
+            // cBUseWhiteIcon
+            // 
+            resources.ApplyResources(this.cBUseWhiteIcon, "cBUseWhiteIcon");
+            this.cBUseWhiteIcon.Name = "cBUseWhiteIcon";
+            this.cBUseWhiteIcon.UseVisualStyleBackColor = true;
+            this.cBUseWhiteIcon.CheckedChanged += new System.EventHandler(this.cBUseWhiteIcon_CheckedChanged);
+            // 
             // cBDownloadLangauge
             // 
             resources.ApplyResources(this.cBDownloadLangauge, "cBDownloadLangauge");
@@ -1068,13 +1073,6 @@
             resources.ApplyResources(this.lbLastXIPort, "lbLastXIPort");
             this.lbLastXIPort.Name = "lbLastXIPort";
             // 
-            // cBUseWhiteIcon
-            // 
-            resources.ApplyResources(this.cBUseWhiteIcon, "cBUseWhiteIcon");
-            this.cBUseWhiteIcon.Name = "cBUseWhiteIcon";
-            this.cBUseWhiteIcon.UseVisualStyleBackColor = true;
-            this.cBUseWhiteIcon.CheckedChanged += new System.EventHandler(this.cBUseWhiteIcon_CheckedChanged);
-            // 
             // flowLayoutPanel1
             // 
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
@@ -1127,6 +1125,72 @@
             resources.ApplyResources(this.tabLog, "tabLog");
             this.tabLog.Name = "tabLog";
             this.tabLog.UseVisualStyleBackColor = true;
+            // 
+            // recordOutputPane
+            // 
+            this.recordOutputPane.Controls.Add(this.recordFreqLbl);
+            this.recordOutputPane.Controls.Add(this.recordFreqTrackBar);
+            this.recordOutputPane.Controls.Add(this.outputDirLabel);
+            this.recordOutputPane.Controls.Add(this.label2);
+            this.recordOutputPane.Controls.Add(this.label1);
+            this.recordOutputPane.Controls.Add(this.recordOutputDirBtn);
+            resources.ApplyResources(this.recordOutputPane, "recordOutputPane");
+            this.recordOutputPane.Name = "recordOutputPane";
+            this.recordOutputPane.UseVisualStyleBackColor = true;
+            // 
+            // recordFreqLbl
+            // 
+            resources.ApplyResources(this.recordFreqLbl, "recordFreqLbl");
+            this.recordFreqLbl.Name = "recordFreqLbl";
+            // Make a new source.
+            var feqLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Frequency");
+            this.recordFreqLbl.DataBindings.Add(feqLabelBinding);
+       
+            // 
+            // recordFreqTrackBar
+            // 
+            this.recordFreqTrackBar.AllowDrop = true;
+            resources.ApplyResources(this.recordFreqTrackBar, "recordFreqTrackBar");
+            this.recordFreqTrackBar.Maximum = 60;
+            this.recordFreqTrackBar.Minimum = 1;
+            this.recordFreqTrackBar.Name = "recordFreqTrackBar";
+            this.recordFreqTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
+            this.recordFreqTrackBar.Value = RecordOutputSettings.Instance.Frequency;
+            this.recordFreqTrackBar.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            // Make a new source.
+            var freqTrackBinding = new Binding("Value", RecordOutputSettings.Instance, "Frequency");
+            this.recordFreqTrackBar.DataBindings.Add(freqTrackBinding);
+                 
+            // 
+            // outputDirLabel
+            // 
+            resources.ApplyResources(this.outputDirLabel, "outputDirLabel");
+            settings2.recordingFrequency = 15;
+            settings2.recordingOutputDirectory = "";
+            settings2.SettingsKey = "";
+            this.outputDirLabel.Name = "outputDirLabel";
+            this.outputDirLabel.Text = settings2.recordingOutputDirectory;
+            // Make a new source.
+            var dirLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Directory");
+            this.outputDirLabel.DataBindings.Add(dirLabelBinding);
+
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.Name = "label2";
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.Name = "label1";
+            // 
+            // recordOutputDirBtn
+            // 
+            resources.ApplyResources(this.recordOutputDirBtn, "recordOutputDirBtn");
+            this.recordOutputDirBtn.Name = "recordOutputDirBtn";
+            this.recordOutputDirBtn.UseVisualStyleBackColor = true;
+            this.recordOutputDirBtn.Click += new System.EventHandler(this.recordOutputDirBtn_Click);
             // 
             // saveProfiles
             // 
@@ -1210,6 +1274,9 @@
             this.flowLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel1.PerformLayout();
             this.tabLog.ResumeLayout(false);
+            this.recordOutputPane.ResumeLayout(false);
+            this.recordOutputPane.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recordFreqTrackBar)).EndInit();
             this.cMCustomLed.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -1340,6 +1407,15 @@
         private System.Windows.Forms.ToolStripMenuItem useCustomColorToolStripMenuItem;
         private AdvancedColorDialog advColorDialog;
         private System.Windows.Forms.CheckBox cBUseWhiteIcon;
+        private System.Windows.Forms.TabPage recordOutputPane;
+        private System.Windows.Forms.Button recordOutputDirBtn;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Label outputDirLabel;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TrackBar recordFreqTrackBar;
+        private System.Windows.Forms.Label recordFreqLbl;
         //private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }

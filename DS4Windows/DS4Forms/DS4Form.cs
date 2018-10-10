@@ -15,6 +15,8 @@ using System.Globalization;
 using System.Threading.Tasks;
 using System.ServiceProcess;
 using static DS4Windows.Global;
+using DS4Windows.DS4Control;
+
 namespace DS4Windows
 {
     public partial class DS4Form : Form
@@ -879,8 +881,8 @@ namespace DS4Windows
                     {
                         Enable_Controls(Index, true);
                         //if (opt != null)
-                       // if (opt.Visible && tabMain.SelectedIndex == 1)
-                            //opt.inputtimer.Start();
+                        // if (opt.Visible && tabMain.SelectedIndex == 1)
+                        //opt.inputtimer.Start();
                         //MinimumSize = new Size(MinimumSize.Width, 137 + 29 * Index);
                     }
                     else
@@ -1046,7 +1048,7 @@ namespace DS4Windows
             if (lBProfiles.SelectedIndex >= 0)
             {
                 Stream stream;
-                Stream profile = new StreamReader(appdatapath + "\\Profiles\\" + lBProfiles.SelectedItem.ToString() + ".xml").BaseStream;                
+                Stream profile = new StreamReader(appdatapath + "\\Profiles\\" + lBProfiles.SelectedItem.ToString() + ".xml").BaseStream;
                 if (saveProfiles.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                     if ((stream = saveProfiles.OpenFile()) != null)
                     {
@@ -1060,7 +1062,7 @@ namespace DS4Windows
         private void ShowOptions(int devID, string profile)
         {
             //if (opt != null)
-                //opt.Close();
+            //opt.Close();
             Show();
             WindowState = FormWindowState.Normal;
             toolStrip1.Enabled = false;
@@ -1353,9 +1355,9 @@ namespace DS4Windows
                     assignToController2ToolStripMenuItem.Visible = true;
                     assignToController3ToolStripMenuItem.Visible = true;
                     assignToController4ToolStripMenuItem.Visible = true;
-                    ToolStripMenuItem[] assigns = { assignToController1ToolStripMenuItem, 
+                    ToolStripMenuItem[] assigns = { assignToController1ToolStripMenuItem,
                                                       assignToController2ToolStripMenuItem,
-                                                      assignToController3ToolStripMenuItem, 
+                                                      assignToController3ToolStripMenuItem,
                                                       assignToController4ToolStripMenuItem };
                     for (int i = 0; i < 4; i++)
                     {
@@ -1694,7 +1696,7 @@ namespace DS4Windows
                 toolTip1.Show(Properties.Resources.InputDelay.Replace("*number*", latency.ToString()), lb, lb.Size.Width, 0);
             }
         }
-        
+
 
         private void Pads_MouseLeave(object sender, EventArgs e)
         {
@@ -1731,7 +1733,7 @@ namespace DS4Windows
             lights[currentCustomLed].BackColor = MainColor[currentCustomLed].ToColorA;
             Global.Save();
         }
-    
+
         private void useCustomColorToolStripMenuItem_Click(object sender, EventArgs e)
         {
             advColorDialog.Color = CustomColor[currentCustomLed].ToColor;
@@ -1763,6 +1765,19 @@ namespace DS4Windows
                 DS4LightBar.forcedFlash[currentCustomLed] = 0;
                 DS4LightBar.forcelight[currentCustomLed] = true;
             }
+        }
+
+        private void recordOutputDirBtn_Click(object sender, EventArgs e)
+        {
+            if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) // Test result.
+            {
+                RecordOutputSettings.Instance.Directory = folderBrowserDialog1.SelectedPath;
+            }
+        }
+
+        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        {
+            RecordOutputSettings.Instance.Frequency = recordFreqTrackBar.Value;
         }
 
         private void cBDownloadLangauge_CheckedChanged(object sender, EventArgs e)

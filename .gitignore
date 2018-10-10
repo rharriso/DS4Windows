@@ -154,3 +154,10 @@ $RECYCLE.BIN/
 
 # Mac desktop service store files
 .DS_Store
+*.lock
+*.ide
+*.ide-shm
+*.ide-wal
+DS4Windows/app.config
+DS4Windows/app.config
+DS4Windows/Properties/DataSources/DS4Windows.DS4Control.RecordOutputSettings.datasource
