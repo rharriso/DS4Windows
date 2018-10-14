@@ -37,7 +37,7 @@ namespace DS4Windows.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
         public int recordingFrequency {
             get {
                 return ((int)(this["recordingFrequency"]));
@@ -46,16 +46,28 @@ namespace DS4Windows.Properties {
                 this["recordingFrequency"] = value;
             }
         }
-
+        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("15")]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
         public int recordingLength {
             get {
                 return ((int)(this["recordingLength"]));
             }
             set {
                 this["recordingLength"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("10")]
+        public int captureFrequency {
+            get {
+                return ((int)(this["captureFrequency"]));
+            }
+            set {
+                this["captureFrequency"] = value;
             }
         }
     }

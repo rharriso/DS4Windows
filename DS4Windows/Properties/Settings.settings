@@ -6,7 +6,13 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="recordingFrequency" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">15</Value>
+      <Value Profile="(Default)">10</Value>
+    </Setting>
+    <Setting Name="recordingLength" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="captureFrequency" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">10</Value>
     </Setting>
   </Settings>
 </SettingsFile>

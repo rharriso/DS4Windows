@@ -491,10 +491,17 @@ namespace DS4Windows
                 // Update the GUI/whatever.
                 DS4LightBar.updateLightBar(device, ind, cState, ExposedState[ind], touchPad[ind]);
 
-                if (RecordOutputSettings.Instance.IsRecording &&
-                    cState.FrameCounter % RecordOutputSettings.Instance.Frequency == 0)
+                if (RecordOutputSettings.Instance.IsRecording)
                 {
-                    ControlStateLogger.Log(cState);
+                        if (cState.FrameCounter % RecordOutputSettings.Instance.Frequency == 0)
+                        {
+                            ControlStateLogger.LogState(cState);
+                        }
+
+                        if (cState.FrameCounter % RecordOutputSettings.Instance.CaptureFrequency == 0)
+                        {
+                            ControlStateLogger.SaveScreenshot(cState);
+                        }
                 }
 
                 x360Bus.Parse(cState, processingData[ind].Report, ind);

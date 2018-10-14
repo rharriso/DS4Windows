@@ -355,8 +355,13 @@ namespace DS4Windows
 
             var feqLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Frequency");
             this.recordFreqLbl.DataBindings.Add(feqLabelBinding);
-            var freqTrackBinding = new Binding("Value", RecordOutputSettings.Instance, "Frequency");
+            var freqTrackBinding = new Binding("Value", RecordOutputSettings.Instance, "FrequencyIndex");
             this.recordFreqTrackBar.DataBindings.Add(freqTrackBinding);
+
+            var capFreqLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "CaptureFrequency");
+            this.captureFreqLbl.DataBindings.Add(capFreqLabelBinding);
+            var capFreqTrackBinding = new Binding("Value", RecordOutputSettings.Instance, "CaptureFrequencyIndex");
+            this.captureFreqTrackBar.DataBindings.Add(capFreqTrackBinding);
 
             var dirLabelBinding = new Binding("Text", RecordOutputSettings.Instance, "Directory");
             this.outputDirLabel.DataBindings.Add(dirLabelBinding);
@@ -1789,9 +1794,14 @@ namespace DS4Windows
             }
         }
 
-        private void trackBar1_ValueChanged(object sender, EventArgs e)
+        private void recordFreqTrackbar_ValueChanged(object sender, EventArgs e)
         {
-            RecordOutputSettings.Instance.Frequency = recordFreqTrackBar.Value;
+            RecordOutputSettings.Instance.FrequencyIndex = recordFreqTrackBar.Value;
+        }
+
+        private void captureFreqTrackbar_ValueChanged(object sender, EventArgs e)
+        {
+            RecordOutputSettings.Instance.CaptureFrequencyIndex = captureFreqTrackBar.Value;
         }
 
         private void toggleRecording_Click(object sender, EventArgs e)

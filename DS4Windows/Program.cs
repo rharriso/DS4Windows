@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.ComponentModel;
 using System.Globalization;
+using DS4Windows.Properties;
 
 namespace DS4Windows
 {
@@ -31,6 +32,7 @@ namespace DS4Windows
         [STAThread]
         static void Main(string[] args)
         {
+            Settings.Default.Reset();
             //Thread.CurrentThread.CurrentUICulture = CultureInfo.GetCultureInfo("he");
             for (int i = 0; i < args.Length; i++)
             {

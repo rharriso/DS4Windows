@@ -151,8 +151,10 @@ namespace DS4Windows
             this.lLBUpdate = new System.Windows.Forms.LinkLabel();
             this.tabLog = new System.Windows.Forms.TabPage();
             this.recordOutputPane = new System.Windows.Forms.TabPage();
+            this.captureFreqTrackBar = new System.Windows.Forms.TrackBar();
             this.recordingLengthInput = new System.Windows.Forms.NumericUpDown();
             this.toggleRecording = new System.Windows.Forms.Button();
+            this.captureFreqLbl = new System.Windows.Forms.Label();
             this.recordFreqLbl = new System.Windows.Forms.Label();
             this.recordFreqTrackBar = new System.Windows.Forms.TrackBar();
             this.outputDirLabel = new System.Windows.Forms.Label();
@@ -166,6 +168,8 @@ namespace DS4Windows
             this.useProfileColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.useCustomColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog1 = new System.Windows.Forms.FolderBrowserDialog();
+            this.recordOutputSettingsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.recordOutputSettingsBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.advColorDialog = new DS4Windows.AdvancedColorDialog();
             this.pnlButton.SuspendLayout();
             this.cMTaskbar.SuspendLayout();
@@ -192,9 +196,12 @@ namespace DS4Windows
             this.flowLayoutPanel1.SuspendLayout();
             this.tabLog.SuspendLayout();
             this.recordOutputPane.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.captureFreqTrackBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordingLengthInput)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordFreqTrackBar)).BeginInit();
             this.cMCustomLed.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.recordOutputSettingsBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordOutputSettingsBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // lvDebug
@@ -1131,8 +1138,10 @@ namespace DS4Windows
             // 
             // recordOutputPane
             // 
+            this.recordOutputPane.Controls.Add(this.captureFreqTrackBar);
             this.recordOutputPane.Controls.Add(this.recordingLengthInput);
             this.recordOutputPane.Controls.Add(this.toggleRecording);
+            this.recordOutputPane.Controls.Add(this.captureFreqLbl);
             this.recordOutputPane.Controls.Add(this.recordFreqLbl);
             this.recordOutputPane.Controls.Add(this.recordFreqTrackBar);
             this.recordOutputPane.Controls.Add(this.outputDirLabel);
@@ -1143,6 +1152,13 @@ namespace DS4Windows
             resources.ApplyResources(this.recordOutputPane, "recordOutputPane");
             this.recordOutputPane.Name = "recordOutputPane";
             this.recordOutputPane.UseVisualStyleBackColor = true;
+            // 
+            // captureFreqTrackBar
+            // 
+            resources.ApplyResources(this.captureFreqTrackBar, "captureFreqTrackBar");
+            this.captureFreqTrackBar.Maximum = 3;
+            this.captureFreqTrackBar.Name = "captureFreqTrackBar";
+            this.captureFreqTrackBar.ValueChanged += new System.EventHandler(this.captureFreqTrackbar_ValueChanged);
             // 
             // recordingLengthInput
             // 
@@ -1157,6 +1173,11 @@ namespace DS4Windows
             this.toggleRecording.UseVisualStyleBackColor = true;
             this.toggleRecording.Click += new System.EventHandler(this.toggleRecording_Click);
             // 
+            // captureFreqLbl
+            // 
+            resources.ApplyResources(this.captureFreqLbl, "captureFreqLbl");
+            this.captureFreqLbl.Name = "captureFreqLbl";
+            // 
             // recordFreqLbl
             // 
             resources.ApplyResources(this.recordFreqLbl, "recordFreqLbl");
@@ -1166,12 +1187,10 @@ namespace DS4Windows
             // 
             this.recordFreqTrackBar.AllowDrop = true;
             resources.ApplyResources(this.recordFreqTrackBar, "recordFreqTrackBar");
-            this.recordFreqTrackBar.Maximum = 60;
-            this.recordFreqTrackBar.Minimum = 1;
+            this.recordFreqTrackBar.Maximum = 3;
             this.recordFreqTrackBar.Name = "recordFreqTrackBar";
-            this.recordFreqTrackBar.TickStyle = System.Windows.Forms.TickStyle.None;
-            this.recordFreqTrackBar.Value = 15;
-            this.recordFreqTrackBar.ValueChanged += new System.EventHandler(this.trackBar1_ValueChanged);
+            this.recordFreqTrackBar.Value = 3;
+            this.recordFreqTrackBar.ValueChanged += new System.EventHandler(this.recordFreqTrackbar_ValueChanged);
             // 
             // outputDirLabel
             // 
@@ -1229,6 +1248,14 @@ namespace DS4Windows
             resources.ApplyResources(this.useCustomColorToolStripMenuItem, "useCustomColorToolStripMenuItem");
             this.useCustomColorToolStripMenuItem.Click += new System.EventHandler(this.useCustomColorToolStripMenuItem_Click);
             // 
+            // recordOutputSettingsBindingSource
+            // 
+            this.recordOutputSettingsBindingSource.DataSource = typeof(DS4Windows.DS4Control.RecordOutputSettings);
+            // 
+            // recordOutputSettingsBindingSource1
+            // 
+            this.recordOutputSettingsBindingSource1.DataSource = typeof(DS4Windows.DS4Control.RecordOutputSettings);
+            // 
             // advColorDialog
             // 
             this.advColorDialog.OnUpdateColor += new DS4Windows.AdvancedColorDialog.ColorUpdateHandler(this.advColorDialog_OnUpdateColor);
@@ -1284,9 +1311,12 @@ namespace DS4Windows
             this.tabLog.ResumeLayout(false);
             this.recordOutputPane.ResumeLayout(false);
             this.recordOutputPane.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.captureFreqTrackBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordingLengthInput)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.recordFreqTrackBar)).EndInit();
             this.cMCustomLed.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.recordOutputSettingsBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.recordOutputSettingsBindingSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1428,6 +1458,10 @@ namespace DS4Windows
         private Button toggleRecording;
         private NumericUpDown recordingLengthInput;
         private Label label3;
+        private TrackBar captureFreqTrackBar;
+        private Label captureFreqLbl;
+        private BindingSource recordOutputSettingsBindingSource;
+        private BindingSource recordOutputSettingsBindingSource1;
         //private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
     }
 }
